@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch("../include/list.php");
     const data = await res.json();
 
-    const container = document.getElementById("article-container");
+    const container = document.getElementById("articleContainer");
 
     data.forEach((article) => {
       // Card 생성
