@@ -1,135 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/common.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <title>register page</title>
-  </head>
-  <body>
-    <div id="navbar-container"></div>
-    <div class="container">
-      <h2 class="my-4">회원가입</h2>
-      <form action="/include/register.php" method="POST" name="register">
-        <div class="mb-3">
-          <label for="username" class="form-label">이름</label>
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            id="username"
-            required
-          />
-          <small id="usernameHelp" class="form-text"></small>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">아이디</label>
-          <input
-            type="email"
-            class="form-control"
-            name="email"
-            id="email"
-            required
-          />
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="checkId"
-            onclick="checkEmailAvailability(document.getElementById('email').value)"
-          >
-            ID 중복확인
-          </button>
-          <small id="emailHelp" class="form-text"></small>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">비밀번호</label>
-          <input
-            type="password"
-            class="form-control"
-            name="password"
-            id="password"
-            required
-          />
-          <small id="passwordHelp" class="form-text"></small>
-        </div>
-        <div class="mb-3">
-          <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
-          <input
-            type="password"
-            class="form-control"
-            name="passwordConfirm"
-            id="passwordConfirm"
-            required
-          />
-          <small id="passwordConfirmHelp" class="form-text text-muted"></small>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../css/common.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <title>register page</title>
+    </head>
+    <body>
+        <div id="navbar-container"></div>
+        <div class="container">
+            <h2 class="my-4">회원가입</h2>
+            <form action="/include/register.php" method="POST" name="register">
+                <div class="mb-3">
+                    <label for="username" class="form-label">이름</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="username"
+                        id="username"
+                        required
+                    />
+                    <small id="usernameHelp" class="form-text"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">아이디</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        id="email"
+                        required
+                    />
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="checkId"
+                        onclick="checkEmailAvailability(document.getElementById('email').value)"
+                    >
+                        ID 중복확인
+                    </button>
+                    <small id="emailHelp" class="form-text"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        id="password"
+                        required
+                    />
+                    <small id="passwordHelp" class="form-text"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="passwordConfirm" class="form-label"
+                        >비밀번호 확인</label
+                    >
+                    <input
+                        type="password"
+                        class="form-control"
+                        name="passwordConfirm"
+                        id="passwordConfirm"
+                        required
+                    />
+                    <small
+                        id="passwordConfirmHelp"
+                        class="form-text text-muted"
+                    ></small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">회원가입</button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="window.history.back()"
+                >
+                    뒤로 가기
+                </button>
+            </form>
         </div>
 
-        <button type="submit" class="btn btn-primary">회원가입</button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          onclick="window.history.back()"
+        <!-- 중복 확인 모달 -->
+        <div
+            class="modal fade"
+            id="idCheckModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
         >
-          뒤로 가기
-        </button>
-      </form>
-    </div>
-
-    <!-- 중복 확인 모달 -->
-    <div
-      class="modal fade"
-      id="idCheckModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">ID 중복 확인</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body" id="modal-message"></div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="useEmail"
-              onclick="useThisEmail()"
-              style="display: none"
-            >
-              사용하기
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              닫기
-            </button>
-          </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            ID 중복 확인
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body" id="modal-message"></div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="useEmail"
+                            onclick="useThisEmail()"
+                            style="display: none"
+                        >
+                            사용하기
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../js/common.js"></script>
-    <script src="../js/navBar.js"></script>
-    <script src="../js/register.js"></script>
-  </body>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"
+        ></script>
+        <script src="../js/common.js"></script>
+        <script src="../js/navBar.js"></script>
+        <script src="../js/register.js"></script>
+    </body>
 </html>
