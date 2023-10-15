@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', async () => {
     try {
         const res = await fetch('../include/list.php')
-        const data = await res.json()
+        const { data } = await res.json()
 
         const container = document.getElementById('articleContainer')
 
