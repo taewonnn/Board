@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logoutButton')
 
+    console.log('확인', logoutButton)
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             // 쿠키 삭제

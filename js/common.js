@@ -20,6 +20,17 @@ function setAuthButtons(authButtonsContainerId) {
                 <a class="nav-link active" id="logoutButton" aria-current="page" href="/pages/login.html">로그아웃</a>
             </li>
         `
+
+        // 로그아웃 - user_id와 user_name 쿠키를 삭제하고, 홈페이지로 리다이렉트
+        document
+            .getElementById('logoutButton')
+            .addEventListener('click', () => {
+                document.cookie =
+                    'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+                document.cookie =
+                    'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+                window.location.href = '/index.html'
+            })
     } else {
         authButtons.innerHTML = `
             <li class="nav-item">
@@ -38,6 +49,7 @@ function setGreeting(greetingContainerId) {
     const username = getCookie('user_name')
     const greetingContainer = document.getElementById(greetingContainerId)
 
+    // username 유무에 따른 기본 메시지
     if (username) {
         greetingContainer.innerText = `Welcome, ${username}!!`
     } else {
@@ -46,14 +58,14 @@ function setGreeting(greetingContainerId) {
 }
 
 // 문서 로드 시 실행
-// document.addEventListener("DOMContentLoaded", function () {
-// authButtons 엘리먼트가 있으면 설정 함수 호출
-if (document.getElementById('authButtons')) {
-    setAuthButtons('authButtons')
-}
+document.addEventListener('DOMContentLoaded', function () {
+    // authButtons 요소가 있으면 설정 함수 호출
+    if (document.getElementById('authButtons')) {
+        setAuthButtons('authButtons')
+    }
 
-// greeting 엘리먼트가 있으면 설정 함수 호출
-if (document.getElementById('greeting')) {
-    setGreeting('greeting')
-}
-// });
+    // greeting 요소가 있으면 설정 함수 호출
+    if (document.getElementById('greeting')) {
+        setGreeting('greeting')
+    }
+})

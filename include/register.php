@@ -1,16 +1,37 @@
 <?php
-    require_once('../class/UserModel.php');
+    require_once(__DIR__ . '/../class/UserModel.php');
 
     $userModel = new UserModel();
 
     // form 입력값
-    // 띄어쓰기 / decode
+    // 띄어쓰기 / Decode
     // $username = str_replace(" ","", trim(urldecode($_POST['username']))) ?? NULL;
     $username = $_POST['username'] ?? NULL;
     $email = $_POST['email'] ?? NULL;
     $password = $_POST['password'] ?? NULL;
     $errors = [];
 
+    // id 중복 검사만 수행하는 경우
+    if(isset($_POST['check_email'])) {
+        $email = $_POST['email'];
+        $result = $userModel->isUserExist($email);
+
+        // 결과를 json으로 반환
+        header('Content-Type: application/json');
+
+        // 결과 확인
+        if ($result === true) {
+            // 중복인 경우
+            echo json_encode(array('status' => 'taken'));
+        } else if ($result === false) { 
+            // 중복이 아닌 경우
+            echo json_encode(array('status' => 'available'));
+        } else {
+            // 에러나 다른 상황의 경우
+            echo json_encode(array('status' => 'error'));
+        }
+        exit();
+    }
 
     // 서버 측 유효성 검사
     if (!$username) {

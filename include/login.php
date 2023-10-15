@@ -1,5 +1,8 @@
 <?php
-require_once '../class/UserModel.php';
+
+require_once(__DIR__ . '/../class/UserModel.php');
+
+header("Content-Type: application/json");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // POST 요청이 들어왔을 때만 처리

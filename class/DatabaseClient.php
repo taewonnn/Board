@@ -1,7 +1,7 @@
 <?php
 
 class DatabaseClient {
-    private $conn = null;
+    protected $conn = null;
     private $host = "127.0.0.1:3306";
     private $user = "root";
     private $pass = "1234";
