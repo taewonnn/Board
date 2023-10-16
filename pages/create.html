@@ -21,32 +21,16 @@
         <div id="navbar-container"></div>
         <div class="container mt-5">
             <h2 class="mb-4">게시판 작성</h2>
-            <form
-                method="post"
-                enctype="multipart/form-data"
-                name="createArticle"
-            >
+            <form method="post" enctype="multipart/form-data" name="createArticle">
                 <!-- 작성자 -->
                 <div class="mb-3">
                     <label for="name" class="form-label">작성자</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        class="form-control"
-                        readonly
-                    />
+                    <input type="text" id="name" name="name" class="form-control" readonly />
                 </div>
                 <!-- 제목 입력 -->
                 <div class="mb-3">
                     <label for="title" class="form-label">제목</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="title"
-                        name="title"
-                        required
-                    />
+                    <input type="text" class="form-control" id="title" name="title" required />
                 </div>
                 <!-- 내용 입력 -->
                 <div class="mb-3">
