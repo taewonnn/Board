@@ -38,12 +38,23 @@ class UserModel extends DatabaseClient {
      */
     // 파라미터 배열로 받기
     public function registerUsers($username, $email, $password) {
+        // try{  
+        //   $sql = "INSERT INTO users (name, email, password) 
+        //       VALUES ('$username', '$email', '$password')
+        //     ";
+
+        // $result = $this->conn->query($sql);
+        // return $result;
+        // } catch(mysqli_sql_exception $ex){
+        //   echo $ex->getMessage();
+        //   // 에러 핸들링
+        // } 
+
         $sql = "INSERT INTO users (name, email, password) 
             VALUES ('$username', '$email', '$password')
         ";
 
         $result = $this->conn->query($sql);
-
         return $result;
     }
 
