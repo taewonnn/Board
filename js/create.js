@@ -26,20 +26,23 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             body: formData,
         })
-            .then((res) => {
-                console.log(res)
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`)
-                }
-                return res.json()
+            .then((response) => {
+                // console.log(response);
+                return response.json()
             })
             .then((data) => {
-                console.log('data 확인', data)
-                if (data.status === 'success') {
+                // 확인
+                console.log(data)
+                if (data.status === '400') {
+                    alert(data.message)
+                } else if (data.status === '500') {
+                    alert(data.message)
+                } else if (data.status === '201') {
                     alert(data.message)
                     window.location.href = '/pages/list.html'
                 } else {
-                    alert('Error: ' + data.message)
+                    // 예외
+                    alert('서버 오류 :' + data.message)
                 }
             })
             .catch((error) => {

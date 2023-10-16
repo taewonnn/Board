@@ -1,5 +1,5 @@
 document.getElementById('deleteButton').addEventListener('click', () => {
-    // 알림 다이얼로그 표시
+    // 알림 표시
     if (confirm('게시글을 삭제하시겠습니까?')) {
         // URL에서 게시글 id 파싱
         const urlParams = new URLSearchParams(window.location.search)

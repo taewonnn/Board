@@ -6,7 +6,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         // ID를 사용하여 게시글의 디테일 데이터 가져오기
         const res = await fetch(`../include/detail.php?id=${articleId}`)
-        const article = await res.json()
+        const { data: article } = await res.json()
+        // 확인
         console.log(article)
 
         document.getElementById('articleTitle').innerHTML = article.title

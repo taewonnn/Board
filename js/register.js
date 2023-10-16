@@ -1,6 +1,17 @@
-// ❗️ 아이디 Input에 빈값일 때도 중복확인하면 사용가능한 id로 나옴
-// email 중복 확인 함수
+/* email 중복 확인 함수 */
 async function checkEmailAvailability(email) {
+    // 이메일 유효성 검사 추가
+    const emailField = document.getElementById('email')
+    const emailHelp = document.getElementById('emailHelp')
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+
+    if (!isValidEmail) {
+        emailHelp.innerText = '올바른 이메일 형식이 아닙니다.'
+        emailField.classList.add('is-invalid')
+        emailField.classList.remove('is-valid')
+        return
+    }
+
     try {
         const res = await fetch('/include/register.php', {
             method: 'POST',
@@ -8,35 +19,33 @@ async function checkEmailAvailability(email) {
             body: 'email=' + email + '&check_email=1',
         })
 
-        if (res.ok) {
-            const result = await res.json()
-            let message = ''
-            let emailField = document.getElementById('email')
-            let emailHelp = document.getElementById('emailHelp')
+        const result = await res.json()
+        console.log('중복확인', result)
 
-            if (result.status === 'available') {
-                message = '사용 가능한 아이디입니다.'
-                emailField.classList.remove('is-invalid')
-                emailField.classList.add('is-valid')
-                document.getElementById('useEmail').style.display =
-                    'inline-block'
-            } else if (result.status === 'taken') {
-                message = '이미 사용 중인 아이디입니다.'
-                emailField.classList.add('is-invalid')
-                emailField.classList.remove('is-valid')
-                emailHelp.innerText = message
-                document.getElementById('useEmail').style.display = 'none'
-            }
+        // message 변수 초기화
+        let message = ''
 
-            // 모달창의 메시지 업데이트 후 모달창 표시
-            document.getElementById('modal-message').innerText = message
-            const modal = new bootstrap.Modal(
-                document.getElementById('idCheckModal')
-            )
-            modal.show()
-        } else {
-            throw new Error('서버 오류')
+        if (result.status === '200') {
+            // 사용가능한 이메일
+            message = result.message
+            emailField.classList.remove('is-invalid')
+            emailField.classList.add('is-valid')
+            document.getElementById('useEmail').style.display = 'inline-block'
+        } else if (result.status === '400' || result.status === '500') {
+            // 중복된 이메일
+            message = result.message
+            emailField.classList.add('is-invalid')
+            emailField.classList.remove('is-valid')
+            emailHelp.innerText = message
+            document.getElementById('useEmail').style.display = 'none'
         }
+
+        // 모달창의 메시지 업데이트 후 모달창 표시
+        document.getElementById('modal-message').innerText = message
+        const modal = new bootstrap.Modal(
+            document.getElementById('idCheckModal')
+        )
+        modal.show()
     } catch (err) {
         console.error(err)
     }
@@ -121,10 +130,13 @@ document
         })
     })
 
+/* 회원가입 클릭 시 */
 document
     .querySelector('form[name="register"]')
-    .addEventListener('submit', function (event) {
-        let isValid = true // 가정: 폼이 유효하다
+    .addEventListener('submit', async function (event) {
+        event.preventDefault()
+
+        let isValid = true
         const allValues = {
             username: document.getElementById('username').value,
             email: document.getElementById('email').value,
@@ -139,7 +151,8 @@ document
             const helpText = validator(fieldValue, allValues)
 
             if (helpText) {
-                isValid = false // 유효하지 않은 필드가 발견되면, isValid를 false로 설정
+                // 유효하지 않은 필드가 발견되면, isValid를 false로 설정
+                isValid = false
                 document.getElementById(`${fieldName}Help`).innerText = helpText
                 document.getElementById(fieldName).classList.add('is-invalid')
                 document.getElementById(fieldName).classList.remove('is-valid')
@@ -154,7 +167,35 @@ document
 
         // 만약 유효하지 않은 필드가 있다면, 폼 제출을 막고 알림을 표시
         if (!isValid) {
-            event.preventDefault() // 폼 제출 막기
             alert('입력이 유효하지 않습니다. 다시 확인해 주세요.')
+            return
+        }
+
+        // 서버로 회원가입 요청
+        try {
+            const res = await fetch('/include/register.php', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(allValues).toString(),
+            })
+
+            const result = await res.json()
+            // 확인
+            console.log(result)
+
+            // 응답 처리
+            if (result.status === '200') {
+                // 회원가입 성공
+                alert(result.message)
+                window.location.href = '/index.html'
+            } else {
+                // 회원가입 실패
+                alert(result.message)
+            }
+        } catch (err) {
+            console.error('error :', err)
+            alert(err.message)
         }
     })

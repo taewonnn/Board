@@ -1,19 +1,22 @@
 <?php
 
-require_once(__DIR__ . '/../class/ArticleModel.php');
-    // 인스턴스 생성
-    $articleModel = new ArticleModel();
+    require_once(__DIR__ . '/../class/ArticleModel.php');
+    require_once(__DIR__ . '/../class/ApiResponse.php');
 
-    // id 파라미터 URL에서 가져오기
-    $articleId = $_GET['id'];
+    if($_SERVER['REQUEST_METHOD'] === 'GET') {
+        // id 파라미터 URL에서 가져오기
+        $articleId = $_GET['id'];
+        
+        // article 가져오기
+        $articleModel = new ArticleModel();
+        $getArticle = $articleModel->getArticleById($articleId);
 
-    // article 가져오기
-    $getArticle = $articleModel->getArticleById($articleId);
-
-    // HTTP header 설정
-    header('Content-Type: application/json');
-
-    // json 변환
-    echo json_encode($getArticle);
+        // response
+        $response = new ApiResponse('200', '',$getArticle);
+    } else {
+        // GET 요청이 아닌 경우
+        $response = new ApiResponse(405, '허용되지 않은 요청입니다.', null);
+        exit();
+    }
 
 ?>

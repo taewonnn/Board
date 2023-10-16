@@ -7,26 +7,24 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         // fetch
         const res = await fetch(`../include/modify.php?id=${articleId}`)
+        const data = await res.json()
         // 확인
-        console.log('res 확인', res)
+        console.log('res 확인', data)
+
+        // article 변수
+        let article
 
         // 응답 상태 확인
-        if (res.status === 403) {
+        if (data.status === '403') {
             // 권한 없음 -> 알림 및 리다이렉트
             alert('접근 권한이 없습니다.')
             window.location.href = '/pages/list.html'
-            return
-        } else if (!res.ok) {
-            // 기타 응답 오류
-            console.error('error', res)
-            return
+        } else if (data.status === '200') {
+            article = data.data
+            console.log(article)
+        } else {
+            console.error('에러 :')
         }
-
-        // 응답이 정상 -> json 파싱
-        const { article } = await res.json()
-
-        // 확인
-        console.log(article)
 
         // 작성자
         document.getElementById('name').value = article.authorName
@@ -41,9 +39,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         } else {
             document.getElementById('imagePreview').src = ''
         }
-    } catch {
-        // ❗️ 에러 처리 필요
-        console.error('error')
+    } catch (error) {
+        // 예외
+        console.error('error :', error)
     }
 })
 
@@ -68,15 +66,17 @@ document
                 return
             }
 
-            const result = await res.json()
-            console.log(result)
-            if (result.status.code === 'success') {
-                alert('수정 완료')
+            // data
+            const data = await res.json()
+            console.log('modify -', data)
+
+            if (data.status === '200') {
+                alert(data.message)
                 window.location.href = `/pages/detail.html?id=${articleId}`
             } else {
-                console.error(result.status.code)
+                alert(data.message)
             }
         } catch (error) {
-            console.error('에러 :', result.status.code)
+            console.error('에러 :', data.message)
         }
     })

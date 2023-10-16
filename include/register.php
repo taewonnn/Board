@@ -1,11 +1,10 @@
 <?php
     require_once(__DIR__ . '/../class/UserModel.php');
+    require_once(__DIR__ . '/../class/APIResponse.php');
 
     $userModel = new UserModel();
 
     // form 입력값
-    // 띄어쓰기 / Decode
-    // $username = str_replace(" ","", trim(urldecode($_POST['username']))) ?? NULL;
     $username = $_POST['username'] ?? NULL;
     $email = $_POST['email'] ?? NULL;
     $password = $_POST['password'] ?? NULL;
@@ -22,69 +21,41 @@
         // 결과 확인
         if ($result === true) {
             // 중복인 경우
-            echo json_encode(array('status' => 'taken'));
-        } else if ($result === false) { 
+            $response = new ApiResponse('400','중복된 이메일 주소입니다.','');
+        } else if ($result === false) {
             // 중복이 아닌 경우
-            echo json_encode(array('status' => 'available'));
+            $response = new ApiResponse('200','사용가능한 이메일 주소입니다.','');
         } else {
             // 에러나 다른 상황의 경우
-            echo json_encode(array('status' => 'error'));
+            $response = new ApiResponse('500','서버 오류가 발생했습니다.','');
         }
         exit();
     }
 
     // 서버 측 유효성 검사
-    if (!$username) {
-        $errors[] = '이름이 필요합니다.';
-    }
-    if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = '올바른 이메일 양식이 아닙니다';
-    }
-    if (!$password || strlen($password) < 3) {
-        $errors[] = '비밀번호는 최소 3자 이상 필요합니다.';
+    if (empty($username) || strlen($username) < 2 || strlen($username) > 20 || !preg_match("/^[A-Za-z가-힣]+$/u", $username)) {
+        $response = new ApiResponse('400', '이름은 2글자 이상 20글자 이하 한글/영어로 작성해야 합니다.', null);
     }
 
-    // id 중복 검사만 수행하는 경우
-    if(isset($_POST['check_email'])) {
-        $email = $_POST['email'];
-        $result = $userModel->isUserExist($email);
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $response = new ApiResponse('400', '올바른 이메일 형식이 아닙니다.', null);
+    }
 
-        // 결과를 json으로 반환
-        header('Content-Type: application/json');
-
-        // 결과 확인
-        if ($result === true) {
-            // 중복인 경우
-            echo json_encode(array('status' => 'taken'));
-        } else if ($result === false) { 
-            // 중복이 아닌 경우
-            echo json_encode(array('status' => 'available'));
-        } else {
-            // 에러나 다른 상황의 경우
-            echo json_encode(array('status' => 'error'));
-        }
-        exit();
+    if (empty($password) || strlen($password) < 3 || preg_match('/\s/', $password)) {
+        $response = new ApiResponse('400', '비밀번호는 3자리 이상이며, 공백을 포함할 수 없습니다.', null);
     }
 
     // 에러가 없는 경우
-    if (!$errors) {
+    if (!isset($response)) {
         // registerUsers 함수 불러오기
         $register = $userModel->registerUsers($username, $email, $password);
 
         if ($register) {
-            header("Location: ../index.html");
-            exit;
+            $response = new ApiResponse('200', '회원가입 성공', null);
         } else {
             // 회원가입 실패 시
-            $errors[] = 'Registration failed. Please try again.';
+            $response = new ApiResponse('400', '회원가입에 실패했습니다. 다시 시도 해주세요!', null);
         }
     }
 
-    // 에러가 있는 경우, 에러 메시지와 함께 이전 페이지로 리다이렉트
-    if ($errors) {
-        echo '회원가입 실패';
-    } exit;
-
-
 ?>
-
