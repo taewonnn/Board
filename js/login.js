@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 쿠키 설정 함수
     const setCookie = (name, value, minutes) => {
-        const expirationDate = new Date(
-            new Date().getTime() + minutes * 60 * 1000
-        )
+        const expirationDate = new Date(new Date().getTime() + minutes * 60 * 1000)
         document.cookie = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`
     }
 
@@ -19,24 +17,27 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: `email=${email}&password=${password}`,
         })
-            .then((res) => {
-                return res.json()
+            .then(async (res) => {
+                console.log(res)
+                if (res.status !== 200) {
+                    // 에러 메시지 지정
+                    const result = await res.json()
+                    throw new Error(result.message)
+                } else {
+                    return res.json()
+                }
             })
             .then((data) => {
                 console.log(data)
-                if (data.status === 200) {
-                    // 로그인 성공 시 - 쿠키 셋팅
-                    setCookie('user_id', data.data.id, 60)
-                    setCookie('user_name', data.data.name, 60)
-                    alert('로그인 성공')
-                    window.location.href = '/index.html'
-                } else {
-                    errorMessage.innerText = data.message
-                }
+                // 로그인 성공 시 - 쿠키 셋팅
+                setCookie('user_id', data.data.id, 60)
+                setCookie('user_name', data.data.name, 60)
+                alert('로그인 성공')
+                window.location.href = '/index.html'
             })
             .catch((error) => {
-                console.error('Error: ', error)
-                alert('다시 시도해주세요!')
+                console.log(error)
+                alert(error.message)
             })
     }
 
