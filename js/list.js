@@ -5,22 +5,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         const container = document.getElementById('articleContainer')
 
-        // text 제한
-        function truncateTextByWords(text, maxWords) {
-            // 띄어쓰기를 기준으로 단어를 분리
-            let words = text.split(' ')
-
-            if (words.length > maxWords) {
-                // 최대 단어 개수만큼 단어 가져오기
-                words = words.slice(0, maxWords)
-                // 단어를 다시 결합 + "..."
-                return words.join(' ') + '...'
-            } else {
-                // 단어의 개수가 maxWords 이하 -> 그대로 출력
-                return text
-            }
-        }
-
         data.forEach((article) => {
             console.log(article)
 
