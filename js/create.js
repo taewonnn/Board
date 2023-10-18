@@ -26,28 +26,25 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             body: formData,
         })
-            .then((response) => {
-                // console.log(response);
-                return response.json()
-            })
-            .then((data) => {
-                // 확인
-                console.log(data)
-                if (data.status === '400') {
-                    alert(data.message)
-                } else if (data.status === '500') {
-                    alert(data.message)
-                } else if (data.status === '201') {
-                    alert(data.message)
-                    window.location.href = '/pages/list.html'
+            .then(async (response) => {
+                console.log('res 확인', response.status)
+                if (response.status !== 201) {
+                    // 에러 메시지 지정
+                    const result = await response.json()
+                    throw new Error(result.message)
                 } else {
-                    // 예외
-                    alert('서버 오류 :' + data.message)
+                    return response.json()
                 }
             })
+            .then((data) => {
+                // 작성 성공 시
+                console.log('data', data)
+                alert(data.message)
+                window.location.href = '/pages/list.html'
+            })
             .catch((error) => {
-                console.error('Error: ', error)
-                alert('다시 시도해주세요!')
+                console.error(error)
+                alert(error.message)
             })
     })
 })
