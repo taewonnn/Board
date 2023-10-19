@@ -13,13 +13,13 @@
         // 쿠키 - users_id 검증
         $users_id = $_COOKIE['user_id'] ?? null;
         if (!$users_id) {
-            $response = new ApiResponse('401', '사용자 인증에 실패했습니다.', null);
+            $response = new ApiResponse(401, '사용자 인증에 실패했습니다.', null);
             exit();
         }
 
         // 입력 데이터 유효성 검증
         if (empty($name) || empty($title) || empty($content)) {
-            $response = new ApiResponse('400', '제목과 내용을 입력해주세요', null);
+            $response = new ApiResponse(400, '제목과 내용을 입력해주세요', null);
             exit();
         }
 
@@ -31,7 +31,8 @@
                 $image_url = $imageUploader->uploadImage($image);
                 
                 if (!$image_url) {
-                    $response = new ApiResponse('500', '이미지 업로드 실패', null);
+                    $response = new ApiResponse(500, '이미지 업로드 실패', null);
+                    $response->responseJSON();
                     exit();
                 }
             }
@@ -43,12 +44,15 @@
             $content = nl2br($content);
 
             if ($createArticle) {
-                $response = new ApiResponse('201', '게시글 작성 성공', null);
+                $response = new ApiResponse(201, '게시글 작성 성공', null);
+                $response->responseJSON();
             } else {
-                $response = new ApiResponse('500', '게시글 작성 실패', null);
+                $response = new ApiResponse(500, '게시글 작성 실패', null);
+                $response->responseJSON();
             }
         } catch (Exception $e) {
-            $response = new ApiResponse('500', $e->getMessage(), null);
+            $response = new ApiResponse(500, $e->getMessage(), null);
+            $response->responseJSON();
             exit();
         }
     }
