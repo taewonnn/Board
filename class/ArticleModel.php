@@ -3,6 +3,7 @@
 require_once(__DIR__ . '/DatabaseClient.php');
 
 class ArticleModel extends DatabaseClient {
+    // articleModel에서 굳이 Article 붙일 필요X
 
     // 부모 클래스의 생성자를 호출
     public function __construct() {
@@ -48,7 +49,10 @@ class ArticleModel extends DatabaseClient {
             VALUES('$users_id', '$title', '$content', '$image_url', NOW())
         ";
 
-        return $this->conn->query($sql) === true;
+        // return $this->conn->query($sql) === true;
+        $result = $this->conn->query($sql);
+
+        return $this->conn->insert_id;
     }
 
     /**
