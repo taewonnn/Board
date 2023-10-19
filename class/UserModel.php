@@ -81,5 +81,4 @@ class UserModel extends DatabaseClient {
 }
 
 
-
-    
+?>
