@@ -20,17 +20,21 @@
 
             if ($delete) {
                 // 삭제 성공
-                $response = new ApiResponse('200', '게시글이 성공적으로 삭제되었습니다.','');
+                $response = new ApiResponse(200, '게시글이 성공적으로 삭제되었습니다.','');
+                $response->responseJSON();
             } else {
                 // 삭제 실패
-                $response = new ApiResponse('500', '게시글 삭제 중 오류가 발생했습니다.', '');
+                $response = new ApiResponse(500, '게시글 삭제 중 오류가 발생했습니다.', '');
+                $response->responseJSON();
             }
         } else {
             // 권한 없음
-            $response = new ApiResponse('403', '게시글 삭제 권한이 없습니다.', '');
+            $response = new ApiResponse(403, '게시글 삭제 권한이 없습니다.', '');
+            $response->responseJSON();
         }
     } else {
         // 파라미터 누락
         $response = new ApiResponse('','필수 파라미터가 누락되었습니다.', '');
+        $response->responseJSON();
     }
 ?>
