@@ -9,10 +9,12 @@
         $articles = $articleModel->getArticles();
         
         $response = new ApiResponse(200, '',$articles);
+        $response->responseJSON();
         exit();
     } else {
         // GET 요청이 아닌 경우
         $response = new ApiResponse(405, '허용되지 않은 요청입니다.', null);
+        $response->responseJSON();
         exit();
     }
 
