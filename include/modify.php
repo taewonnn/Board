@@ -11,7 +11,7 @@
     $articleId = $_GET['id'] ?? null;
     $userId = $_COOKIE["user_id"] ?? null;
 
-    // GET 요청 함수 - 게시글 가져오기
+    /* GET 요청 함수 - 게시글 가져오기 */
     function handleGetRequest($articleModel, $articleId, $userId) {
         // 게시글 가져오기
         $getArticle = $articleModel->getArticleById($articleId);
@@ -19,19 +19,22 @@
         if ($getArticle) {
             // 권한 확인
             if ($userId == $getArticle['users_id']) {
-                $response = new ApiResponse('200','',$getArticle);
+                $response = new ApiResponse(200,'',$getArticle);
+                $response-> responseJSON();
                 exit();
             } else {
-                $response = new ApiResponse('403','접근 권한이 없습니다.', '');
+                $response = new ApiResponse(403,'접근 권한이 없습니다.', '');
+                $response-> responseJSON();
                 exit();
             }
         } else {
-            $response = new ApiResponse('404','게시글이 존재하지 않습니다.', '');
+            $response = new ApiResponse(404,'게시글이 존재하지 않습니다.', '');
+            $response-> responseJSON();
             exit();
         }
     }
 
-    // POST 요청 함수 - 게시글 수정
+    /* POST 요청 함수 - 게시글 수정 */
     function handlePostRequest($articleModel, $articleId, $userId) {
         $title = $_POST['title'] ?? null;
         $content = $_POST['content'] ?? null;
@@ -48,7 +51,7 @@
             $image_url = $imageUploader->uploadImage($image);
 
             if (!$image_url) {
-                $response = new ApiResponse('400', '이미지 업로드에 실패했습니다.','');
+                $response = new ApiResponse(400, '이미지 업로드에 실패했습니다.','');
                 exit();
             }
         }
@@ -56,9 +59,11 @@
         $result = $articleModel->modifyArticle($articleId, $userId, $title, $content, $image_url);
 
         if ($result) {
-            $reseponse = new ApiResponse('200', '게시글 수정 완료했습니다.', '');
+            $reseponse = new ApiResponse(200, '게시글 수정 완료했습니다.', '');
+            $reseponse->responseJSON();
         } else {
-            $reseponse = new ApiResponse('500', '업데이트에 실패했습니다.', '');
+            $reseponse = new ApiResponse(500, '업데이트에 실패했습니다.', '');
+            $reseponse->responseJSON();
         }
         exit();
     }
@@ -70,6 +75,7 @@
         handlePostRequest($articleModel, $articleId, $userId);
     } else {
         $response = new ApiResponse(405, '허용되지 않은 요청입니다.', null);
+        $response->responseJSON();
         exit();
     }
 ?>
