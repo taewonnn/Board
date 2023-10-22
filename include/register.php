@@ -56,8 +56,8 @@
             $response = new ApiResponse(200, '회원가입 완료헀습니다.', null);
             $response->responseJSON();
         } catch (mysqli_sql_exception $ex) {
-            // echo $ex->getMessage();
             // 회원가입 실패 시
+            // echo $ex->getMessage();
             $response = new ApiResponse(400, '회원가입에 실패했습니다. 다시 시도 해주세요!', null);
             $response->responseJSON();  
         } 
