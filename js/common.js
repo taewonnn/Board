@@ -22,9 +22,10 @@ function setAuthButtons(authButtonsContainerId) {
 
         // 로그아웃 - user_id와 user_name 쿠키를 삭제하고, 홈페이지로 리다이렉트
         document.getElementById('logoutButton').addEventListener('click', () => {
+            console.log('로그아웃 버튼 클릭!')
+            // 쿠키 삭제
             document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-            window.location.href = '/index.html'
         })
     } else {
         authButtons.innerHTML = `
