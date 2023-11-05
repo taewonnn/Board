@@ -1,4 +1,5 @@
 <?php
+
     require_once(__DIR__ . '/../class/ArticleModel.php');
     require_once(__DIR__ . '/../class/ImageUploader.php');
     require_once(__DIR__ . '/../class/ApiResponse.php');
@@ -14,12 +15,14 @@
         $users_id = $_COOKIE['user_id'] ?? null;
         if (!$users_id) {
             $response = new ApiResponse(401, '사용자 인증에 실패했습니다.', null);
+            $response->responseJSON();
             exit();
         }
 
         // 입력 데이터 유효성 검증
         if (empty($name) || empty($title) || empty($content)) {
             $response = new ApiResponse(400, '제목과 내용을 입력해주세요', null);
+            $response->responseJSON();
             exit();
         }
 
