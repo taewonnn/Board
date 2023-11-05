@@ -33,16 +33,35 @@
 
         /**
          * create reply
+         * @param int $users_id
+         * @param string $name
+         * @param string $content
+         * @return array
          */
-        public function create($users_id, $name, $content) {
+        public function create($users_id, $articleId, $content) {
             $sql = "INSERT INTO replies
-            (users_id, name, content, created_at)
-            VALUES('$users_id', '$name', '$content', NOW())
-            ";
+                (users_id, articles_id, content, created_at)
+                VALUES('$users_id', '$articleId', '$content', NOW())
+        ";
 
             $result = $this->conn->query($sql);
             return $result;
         }
+
+        /**
+         * delete reply
+         * @param int $users_id
+         * @param int $articles_id
+         */
+        public function delete($users_id, $articleId) {
+            $sql = "DELETE FROM replies
+                WHERE id = $users_id AND articleId = $articleId
+            ";
+
+            $result = $this->conn->query($sql);
+            return $result === true;
+        }
+
 
 
 
