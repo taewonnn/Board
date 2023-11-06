@@ -52,10 +52,27 @@
          * delete reply
          * @param int $users_id
          * @param int $articles_id
+         * @param int $replies_id 
          */
-        public function delete($users_id, $articleId) {
+        public function delete($users_id, $articles_id, $replies_id ) {
             $sql = "DELETE FROM replies
-                WHERE id = $users_id AND articleId = $articleId
+                WHERE users_id = $users_id AND articles_id = $articles_id AND id = $replies_id
+            ";
+        
+            $result = $this->conn->query($sql);
+            return $result === true;
+        }
+
+        /**
+         * modify reply by ID
+         * @param int $replyId
+         * @param string $content
+         * @return bool
+         */
+        public function modify($replyId, $content) {
+            $sql = "UPDATE replies
+                SET content = '$content'
+                WHERE id = $replyId
             ";
 
             $result = $this->conn->query($sql);
@@ -63,9 +80,8 @@
         }
 
 
-
-
     }
 
 
 ?>
+
