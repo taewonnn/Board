@@ -1,4 +1,5 @@
 <?php
+
     require_once(__DIR__ . '/../class/ArticleModel.php');
     require_once(__DIR__ . '/../class/APIResponse.php');
 
