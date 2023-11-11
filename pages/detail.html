@@ -39,14 +39,15 @@
             <ul class="comment-list list-group mb-4"></ul>
 
             <!-- 댓글 작성 form-->
-            <form id="comment-form">
+            <form id="createReply" method="POST" name="createReply">
                 <div class="mb-4">
                     <h5>댓글 작성</h5>
                     <textarea
+                        id="replyContent"
                         class="form-control mb-2"
                         placeholder="댓글을 입력하세요..."
                     ></textarea>
-                    <button class="btn btn-primary">댓글 작성</button>
+                    <button class="btn btn-primary reply-button">댓글 작성</button>
                 </div>
             </form>
 
@@ -57,6 +58,9 @@
         <script src="../js/common.js"></script>
         <script src="../js/navBar.js"></script>
         <script src="../js/detail.js"></script>
+        <script src="../js/reply/create.js"></script>
         <script src="../js/delete.js"></script>
+        <script src="../js/reply/delete.js"></script>
+        <script src="../js/reply/modify.js"></script>
     </body>
 </html>
