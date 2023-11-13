@@ -59,11 +59,11 @@
         $result = $articleModel->modifyArticle($articleId, $userId, $title, $content, $image_url);
 
         if ($result) {
-            $reseponse = new ApiResponse(200, '게시글 수정 완료했습니다.', '');
-            $reseponse->responseJSON();
+            $response = new ApiResponse(200, '게시글 수정 완료했습니다.', '');
+            $response->responseJSON();
         } else {
-            $reseponse = new ApiResponse(500, '업데이트에 실패했습니다.', '');
-            $reseponse->responseJSON();
+            $response = new ApiResponse(500, '업데이트에 실패했습니다.', '');
+            $response->responseJSON();
         }
         exit();
     }
